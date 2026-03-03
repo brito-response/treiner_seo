@@ -1,0 +1,62 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: blog_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: blogdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: blog_backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./backend/src:/app/src
+      - ./backend/package.json:/app/package.json
+      - ./backend/package-lock.json:/app/package-lock.json
+      - ./backend/tsconfig.json:/app/tsconfig.json
+      - ./backend/tsconfig.build.json:/app/tsconfig.build.json
+      - ./backend/nest-cli.json:/app/nest-cli.json
+      - ./backend/.env:/app/.env
+      - ./backend/uploads:/app/uploads
+      - backend_node_modules:/app/node_modules
+    depends_on:
+      - postgres
+    restart: on-failure
+    command: npm run start:dev
+
+  frontend:
+    build: ./frontend
+    container_name: blog_frontend
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./frontend/.env.local
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+      - ./frontend/package.json:/app/package.json
+      - ./frontend/package-lock.json:/app/package-lock.json
+      - ./frontend/tsconfig.json:/app/tsconfig.json
+      - ./frontend/next.config.ts:/app/next.config.ts
+      - ./frontend/tailwind.config.ts:/app/tailwind.config.ts
+      - ./frontend/postcss.config.mjs:/app/postcss.config.mjs
+      - ./frontend/.env.local:/app/.env.local
+      - frontend_node_modules:/app/node_modules
+    depends_on:
+      - backend
+    restart: on-failure
+    command: npm run dev
+
+volumes:
+  pgdata:
+  backend_node_modules:
+  frontend_node_modules:

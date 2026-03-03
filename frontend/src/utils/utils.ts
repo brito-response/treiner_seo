@@ -1,0 +1,2 @@
+export const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+export const formUrlImage = (basicUrl?: string): string => basicUrl ? `${process.env.NEXT_BACKEND_URL}${basicUrl}` : `${process.env.NEXT_FRONTEND_URL}/default-post.png`;

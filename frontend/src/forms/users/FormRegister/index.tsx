@@ -1,0 +1,77 @@
+"use client";
+
+import { useForm, FormProvider } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { formSchema, FormSchemaType } from "./formregister-scheme";
+import { toast } from "react-toastify";
+import { ButtonGeneric } from "@/components/ButtonGeneric";
+import { InputCustom } from "@/components/Inputs/InputCustom";
+
+export const FormRegister = () => {
+  const router = useRouter();
+  const methods = useForm<FormSchemaType>({
+    resolver: yupResolver(formSchema), mode: "onChange",
+    defaultValues: { name: "", email: "", cpf: "", dateOfBirth: new Date(), password: "", repeatPassword: "", phone: "", country: "", state: "", city: "", address: "" },
+  });
+
+  const handlesubmitRegister = async (data: FormSchemaType) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/users`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (response && response.status === 201) {
+        toast.success("User created successfully.");
+        router.push("/");
+      } else {
+        toast.error(response.status === 400 ? "Email already exists in the application, proceed to password reset" : "Error registering");
+      }
+    } catch (error) {
+      throw new Error("There was a communication.");
+    }
+  };
+
+  return (
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(handlesubmitRegister)} className="flex flex-col gap-4 p-6 bg-white rounded-md w-full max-w-[80%] mx-auto">
+        {/* Linha 1 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <InputCustom name="name" label="Nome completo" required />
+          <InputCustom name="email" label="Email" type="email" required />
+        </div>
+
+        {/* Linha 2 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <InputCustom name="cpf" label="CPF" required />
+          <InputCustom name="dateOfBirth" label="Data de nascimento" type="date" asDate required />
+          <InputCustom name="phone" label="Telefone" required />
+        </div>
+
+        {/* Linha 3 */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <InputCustom name="country" label="País" required />
+          <InputCustom name="state" label="Estado" required />
+          <InputCustom name="city" label="Cidade" required />
+        </div>
+
+        {/* Linha 4 */}
+        <InputCustom name="address" label="Endereço" required />
+
+        {/* Linha 5 - Senhas */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <InputCustom name="password" label="Senha" type="password" required />
+          <InputCustom name="repeatPassword" label="Confirme sua senha" type="password" required />
+        </div>
+
+        {/* Botão */}
+        <div className="flex justify-center mt-4">
+          <ButtonGeneric label="Registrar" />
+        </div>
+      </form>
+    </FormProvider>
+  );
+};
+

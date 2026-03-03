@@ -1,0 +1,1 @@
+export { FormDeleteResource } from "./FormDelete";

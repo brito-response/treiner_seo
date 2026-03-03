@@ -1,0 +1,10 @@
+export { CreatePostDto } from "./create-post.dto";
+export { FindPostsQueryDto } from "./find-query-post.dto";
+export { UpdatePostTagsDto } from "./update-post-tags.dto";
+export { UpdatePostDto } from "./update-post.dto";
+export { UserIdDto } from "./userId-post.dto";
+export { ResponsePostDto } from "./response-post.dto";
+export { ResponsePaginatedPostsDto } from "./paginated.dto";
+export { SetCategoriesDto } from "./setcategories.dto";
+export { SetTagsDto } from "./settags.dto";
+export { ResponseHighlightedPostDto } from "./response-maiordestaque.dto"

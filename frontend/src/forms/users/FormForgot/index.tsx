@@ -1,0 +1,83 @@
+"use client";
+
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "react-toastify";
+
+type Response = { message: string, statusCode: number };
+export async function sendEmailServerSideProps(email: string): Promise<Response> {
+    try {
+        const response = await fetch(`${ process.env.NEXT_PUBLIC_BACKEND_URL }/auth/sendEmail`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email }),
+            cache: "no-store",
+        });
+
+        if (response.ok) {
+            return { message: "Email sent successfully.", statusCode: 200 };
+        } else if (response.status === 404) {
+            return { message: "This email address is not registered in the system.", statusCode: 404 };
+        }
+
+        return { message: "Incorrect email format.", statusCode: 400 };
+    } catch {
+        return { message: "The server is not responding.", statusCode: 500 };
+    }
+}
+
+export const FormForgot = () => {
+    const router = useRouter();
+    const [data, setData] = useState<Response>({ statusCode: 0, message: "" });
+
+    const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const form = e.currentTarget;
+        const emailInput = form.elements.namedItem("email") as HTMLInputElement | null;
+
+        if (!emailInput) {
+            toast.error("Email field not found.");
+            return;
+        }
+
+        const email = emailInput.value;
+
+        const data = await sendEmailServerSideProps(email);
+        setData(data);
+
+        if (data.statusCode !== 200) {
+            toast.error(data.message);
+        } else {
+            router.push("/forgotredef");
+        }
+    };
+
+    return (
+        <div className="w-full max-w-md p-8 space-y-6 bg-white rounded shadow-md">
+            <h2 className="text-2xl font-bold text-center">Forgot Password</h2>
+
+            <form className="space-y-4" onSubmit={handleSubmit}>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                    Email
+                </label>
+
+                <input id="email" name="email" type="email" required className="w-full px-3 py-2 mt-1 border rounded shadow-sm focus:outline-none focus:ring focus:border-blue-300"/>
+
+                <button type="submit" className="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
+                    Send
+                </button>
+
+                <div className="mt-3 flex justify-between">
+                    <Link href="/" className="text-sm text-blue-500 hover:underline">
+                        Back to login
+                    </Link>
+                    <Link href="/cadastro" className="text-sm text-blue-500 hover:underline">
+                        Create account
+                    </Link>
+                </div>
+            </form>
+        </div>
+    );
+};

@@ -1,0 +1,53 @@
+"use client";
+
+import { useForm, FormProvider } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { formSchema } from './formredef-scheme';
+import { InputCustom } from '@/components/Inputs/InputCustom';
+
+type Response = { message: string, statusCode: number };
+interface IFormInputRedem { token: string; password: string; confirpassword: string; };
+export async function sendRedemServerSideProps(data: IFormInputRedem): Promise<Response> {
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/redefinir`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ token: data.token, password: data.password, rePassword: data.confirpassword }),
+        });
+
+        if (response.ok) return { message: "Password reset successfully.", statusCode: 200 } as Response;
+        return { message: "User not found, or invalid token.", statusCode: 404 } as Response;
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+        // Erro de rede pode ocorrer nenhum status é retornado
+        return { message: "The server stopped responding", statusCode: 500 } as Response;
+    }
+};
+
+export const FormRedef = () => {
+  const router = useRouter();
+  const methods = useForm<IFormInputRedem>({ resolver: yupResolver(formSchema) , mode: 'onChange', defaultValues: { token: '', password: '', confirpassword: '' } });
+
+  const onSubmit = async (data: IFormInputRedem) => {
+    const response = await sendRedemServerSideProps(data);
+    if (response.statusCode === 200) {
+      router.push("/login");
+    }
+  };
+
+  return (
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-4 p-6 bg-white shadow-md rounded-md">
+        <InputCustom name="token" label="Código" required={true} />
+        <InputCustom name="password" label="Senha" type="password" required={true} />
+        <InputCustom name="confirpassword" label="Confirme a senha" type="password" required={true} />
+
+        <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Send</button>
+      </form>
+    </FormProvider>
+  );
+}

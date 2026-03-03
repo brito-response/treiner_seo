@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@import "flowbite";
+
+body {
+  color: balck;
+  font-family: Helvetica, sans-serif;
+}

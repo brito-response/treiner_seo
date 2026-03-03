@@ -1,0 +1,128 @@
+import { Injectable } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { BaseService } from 'src/common/base/base.service';
+import { fromString, TypeUser, User } from './entities/user.entity';
+import { UserRepository } from './repository/user.repository';
+import { ApiError } from 'src/common/errors/api-error.class';
+import { UpdateUserPasswordDto } from './dto';
+import { InferCreationAttributes } from 'sequelize';
+import { TokenService } from './token.service';
+import * as bcrypt from 'bcrypt';
+import { EmailService } from './email.service';
+
+@Injectable()
+export class UsersService extends BaseService<User, CreateUserDto, UpdateUserDto> {
+  constructor(private readonly userRepository: UserRepository, private readonly tokenService: TokenService, private readonly emailService: EmailService) {
+    super(userRepository);
+  }
+  async createRemovePassword(createDto: CreateUserDto): Promise<User> {
+    const user = await this.userRepository.buscarPorEmail(createDto.email);
+    if (user) { throw new ApiError("already exists user-email in aplication", 400) };
+    const { repeatPassword, ...userData } = createDto;
+    return await this.userRepository.criar(userData as unknown as InferCreationAttributes<User>);
+  }
+
+  async getByEmail(email: string): Promise<User | null> {
+    return this.userRepository.buscarPorEmail(email);
+  }
+
+  async sendEmailcheck(email: string): Promise<boolean> {
+    const usuario = await this.userRepository.buscarPorEmail(email);
+    if (usuario) {
+      try {
+        const token = await this.tokenService.generateToken(email);
+        this.emailService.sendEmail(email, 'use esse link para verificar sua conta na nossa plataforma', token, `um html "/users/email-code-checked/:${token}/:${email}"`);
+      } catch (error) {
+        throw new ApiError(`Deu pau:${error}`, 400);
+      }
+      return true;
+    }
+    return false;
+  }
+
+  async getCheckEmail(token: string, email: string): Promise<boolean> {
+    const tokenvalido = await this.tokenService.validateToken(token, email);
+    if (tokenvalido) {
+      const usuario = await this.userRepository.buscarPorEmail(email);
+      if (usuario) {
+        usuario.checked = true;
+        const [atualizou] = await this.userRepository.update(usuario?.userId, usuario);
+        return true;
+      }
+    }
+    return false;
+  }
+
+
+  async sendEmailWithHashResetPassword(email: string): Promise<boolean> {
+    const usuario = await this.userRepository.buscarPorEmail(email);
+    if (usuario) {
+      try {
+        const token = await this.tokenService.generateToken(email);
+        /** to: string → O destinatário do e-mail (exemplo: "usuario@email.com").
+         *  subject: string → O assunto do e-mail (exemplo: "Bem-vindo ao nosso serviço!").
+         *  text: string → O corpo do e-mail em texto puro (sem formatação HTML).
+         *  html?: string → (Opcional) O corpo do e-mail em formato HTML, permitindo estilização e formatação. */
+        this.emailService.sendEmail(email, 'Token para redefinição de senha', token, `um html "${token}"`);
+      } catch (error) {
+        throw new Error(`Deu pau:${error}`);
+      }
+      return true;
+    }
+    return false;
+  }
+
+  async redefinirSenha(token: string, email: string, password: string, repassword: string): Promise<number> {
+    const tokenvalido = await this.tokenService.validateToken(token, email);
+    if (tokenvalido) {
+      const objetoEmailDecritado = await this.tokenService.decryptToken(token);
+      if (objetoEmailDecritado === email && password === repassword) {
+        const usuario = await this.userRepository.buscarPorEmail(email);
+        if (usuario) {
+          const salt = await bcrypt.genSalt(12);
+          usuario.password = await bcrypt.hash(password, salt);
+          const [atualizou] = await this.userRepository.update(usuario?.userId, usuario);
+          return atualizou;
+        }
+      }
+    }
+    return 0;
+  }
+
+  async listarPaginado(limit: number, offset: number): Promise<{ rows: User[]; count: number }> {
+    const objectWithUsuarios = await this.userRepository.findWithPagination(limit, offset);
+    if (!objectWithUsuarios) throw new ApiError('the resource could not be retrieved!', 400);
+    return objectWithUsuarios;
+  }
+
+  async getUsersOfType(tipoUsuario: string): Promise<User[]> {
+    let tipo: TypeUser;
+    try {
+      tipo = fromString(tipoUsuario);
+    } catch {
+      throw new ApiError('this type of user is not valid.', 400);
+    }
+    return await this.userRepository.buscarPorTipo(tipo);
+  }
+
+  async updatePassword(id: string, updateDto: UpdateUserPasswordDto): Promise<User> {
+    const user = await this.findOne(id);
+    const passwordMatch = await bcrypt.compare(updateDto.password, user.password);
+
+    if (!passwordMatch) throw new ApiError("invalid user password", 400);
+
+    const hashed = await bcrypt.hash(updateDto.newPassword, 12);
+    const [count, rows] = await this.userRepository.updatePassword(user.userId, hashed);
+    if (count === 0 || !rows?.length) throw new ApiError("Is not possible update", 500);
+    return rows[0];
+  }
+
+  async addPhoto(id: string, newImages: string) {
+    const user = await this.userRepository.getInstanceOfUserById(id);
+    if (!user) throw new ApiError('User not found', 404);
+    user.photo = newImages;
+    await user.save();
+    return user;
+  }
+}
