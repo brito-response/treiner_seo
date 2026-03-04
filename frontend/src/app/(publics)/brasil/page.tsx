@@ -1,4 +1,5 @@
-import NewsCard from '@/components/NewsCard';
+
+import { NewsCard } from '@/components/NewsCard';
 import { newsMock } from '@/data/news';
 
 export default function pageBrasil() {

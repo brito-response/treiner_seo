@@ -21,7 +21,7 @@ services:
     volumes:
       - ./backend/src:/app/src
       - ./backend/package.json:/app/package.json
-      - ./backend/package-lock.json:/app/package-lock.json
+      - ./backend/pnpm-lock.yaml:/app/pnpm-lock.yaml
       - ./backend/tsconfig.json:/app/tsconfig.json
       - ./backend/tsconfig.build.json:/app/tsconfig.build.json
       - ./backend/nest-cli.json:/app/nest-cli.json
@@ -44,7 +44,7 @@ services:
       - ./frontend/src:/app/src
       - ./frontend/public:/app/public
       - ./frontend/package.json:/app/package.json
-      - ./frontend/package-lock.json:/app/package-lock.json
+      - ./frontend/pnpm-lock.yaml:/app/pnpm-lock.yaml
       - ./frontend/tsconfig.json:/app/tsconfig.json
       - ./frontend/next.config.ts:/app/next.config.ts
       - ./frontend/tailwind.config.ts:/app/tailwind.config.ts
