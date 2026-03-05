@@ -54,21 +54,26 @@ export class PostsRepository extends BaseRepository<Post> {
     }
 
     async findByQuery(query: FindPostsQueryDto): Promise<{ rows: Post[]; count: number }> {
-        const { status, userId, categoryId, tagId, search, orderBy = 'createdAt', order = 'DESC', page = 1, limit = 10 } = query;
+        const { status, userId, categoryId, categoryName, tagId, search, orderBy = 'createdAt', order = 'DESC', page = 1, limit = 10 } = query;
+
         const where: any = { deletedAt: null };
         if (status) { where.status = status; }
         if (userId) { where.userId = userId; }
         if (search) {
-            where[Op.or] = [
-                { title: { [Op.iLike]: `%${search}%` } },
-                { content: { [Op.iLike]: `%${search}%` } },
-            ];
+            where[Op.or] = [{ title: { [Op.iLike]: `%${search}%` } }, { content: { [Op.iLike]: `%${search}%` } }];
         }
+        const include: any[] = [{ model: User }];
+        const categoryInclude: any = { model: Category, through: { attributes: [] } };
+        if (categoryId || categoryName) {
+            categoryInclude.where = {};
+            if (categoryId) { categoryInclude.where.id = categoryId; }
+            if (categoryName) { categoryInclude.where.name = { [Op.iLike]: `%${categoryName}%` }; }
+        }
+        include.push(categoryInclude);
 
-        const include: any[] = [{ model: User }, { model: Category, through: { attributes: [] } }, { model: Tag, through: { attributes: [] } }];
-        if (categoryId) { include.push({ model: Category, where: { categoryId }, through: { attributes: [] } }) };
-
-        if (tagId) { include.push({ model: Tag, where: { tagId }, through: { attributes: [] } }) };
+        const tagInclude: any = { model: Tag, through: { attributes: [] } };
+        if (tagId) { tagInclude.where = { id: tagId }; }
+        include.push(tagInclude);
 
         const offset = (page - 1) * limit;
         return await this.findWithPagination(limit, offset, { where, include, order: [[orderBy, order]], distinct: true });

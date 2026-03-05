@@ -40,12 +40,8 @@ export class PostsController {
   }
 
   @ApiOkResponse({ type: ResponsePaginatedPostsDto })
-  @ApiBearerAuth('jwt')
-  @ApiQuery({ type: FindPostsQueryDto })
-  @Roles('ADMIN', 'AUTHOR', 'COMMENTATOR')
-  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('filtered')
-  async findAll(@Query() query: FindPostsQueryDto): Promise<ResponsePaginatedPostsDto> {
+  async findAllFiltered(@Query() query: FindPostsQueryDto): Promise<ResponsePaginatedPostsDto> {
     const { rows, count } = await this.postsService.findAllByQuery(query);
 
     const mappedRows = plainToInstance(ResponsePostDto, rows, { excludeExtraneousValues: true });

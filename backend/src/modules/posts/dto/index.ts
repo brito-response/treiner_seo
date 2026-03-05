@@ -4,7 +4,8 @@ export { UpdatePostTagsDto } from "./update-post-tags.dto";
 export { UpdatePostDto } from "./update-post.dto";
 export { UserIdDto } from "./userId-post.dto";
 export { ResponsePostDto } from "./response-post.dto";
-export { ResponsePaginatedPostsDto } from "./paginated.dto";
+export { ResponsePaginatedPostsDto } from "./respose-paginated.dto";
 export { SetCategoriesDto } from "./setcategories.dto";
 export { SetTagsDto } from "./settags.dto";
-export { ResponseHighlightedPostDto } from "./response-maiordestaque.dto"
+export { ResponseHighlightedPostDto } from "./response-maiordestaque.dto";
+export {ResponsePostQueryDto} from "./respose-query.dto";

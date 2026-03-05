@@ -20,6 +20,11 @@ export class FindPostsQueryDto {
     @IsUUID()
     categoryId?: string;
 
+    @ApiPropertyOptional({ description: 'Nome da categoria' })
+    @IsOptional()
+    @IsString()
+    categoryName?: string; 
+
     @ApiPropertyOptional()
     @IsOptional()
     @IsUUID()

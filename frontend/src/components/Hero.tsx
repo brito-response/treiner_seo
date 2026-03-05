@@ -14,7 +14,7 @@ async function getHilight(): Promise<PostHilight | null> {
   } catch (error) {
     return null;
   }
-}
+};
 
 export default async function Hero() {
   const news = await getHilight();

@@ -18,29 +18,17 @@ function Header() {
         }
         
         <ul className="hidden md:flex gap-8 uppercase items-center justify-center text-blue-900 font-bold">
-          <li className="relative py-2 cursor-pointer before:content-[''] before:absolute before:left-0 before:bottom-0 before:h-0.5 before:w-0 before:bg-red-600 before:transition-all before:duration-300 hover:before:w-full">
-            <Link href="/brasil" className="py-6">
-              Brasil
-            </Link>
-          </li>
-          <li className="relative py-2 cursor-pointer before:content-[''] before:absolute before:left-0 before:bottom-0 before:h-0.5 before:w-0 before:bg-red-600 before:transition-all before:duration-300 hover:before:w-full">
-            <Link href="/mundo" className="py-6">
-              Mundo
-            </Link>
-          </li>
-          <li className="relative py-2 cursor-pointer before:content-[''] before:absolute before:left-0 before:bottom-0 before:h-0.5 before:w-0 before:bg-red-600 before:transition-all before:duration-300 hover:before:w-full">
-            <Link href="/tecnologia" className="py-6">
-              Tecnólogia
-            </Link>
-          </li>
+
           <li className="relative py-2 cursor-pointer before:content-[''] before:absolute before:left-0 before:bottom-0 before:h-0.5 before:w-0 before:bg-red-600 before:transition-all before:duration-300 hover:before:w-full">
             <Link href="/esportes" className="py-6">
               Esportes
             </Link>
           </li>
+
           <li className="relative py-2 cursor-pointer before:content-[''] before:absolute before:left-0 before:bottom-0 before:h-0.5 before:w-0 before:bg-red-600 before:transition-all before:duration-300 hover:before:w-full">
             <FormLoginWrapper />
           </li>
+          
         </ul>
       </nav>
     </header>
