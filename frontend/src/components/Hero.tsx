@@ -29,7 +29,7 @@ export default async function Hero() {
   return (
     <section className="w-full">
       <div className="relative w-full h-105 md:h-130 rounded-2xl overflow-hidden">
-        <Image src={formUrlImage(news.image)} alt={news.title} fill priority className="object-cover transition-transform duration-700 hover:scale-105" />
+        <Image src={formUrlImage(news.image)} alt={news.title} fill priority className="object-cover transition-transform duration-700 hover:scale-105" unoptimized />
 
         <div className="absolute inset-0 bg-black/50" />
 

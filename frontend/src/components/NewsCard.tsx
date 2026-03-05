@@ -9,8 +9,7 @@ export const NewsCard = ({ news }: Props) => {
   return (
     <article className="group border border-gray-300 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-white">
       <div className="relative w-full h-44 overflow-hidden">
-        <Image src={formUrlImage(news.image) || ""} alt={news.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500"
-        />
+        <Image src={formUrlImage(news.image) || ""} alt={news.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" unoptimized />
       </div>
 
       <div className="p-4 space-y-2">

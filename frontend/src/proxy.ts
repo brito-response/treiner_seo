@@ -4,7 +4,7 @@ import { decoderTokenToClaims } from "./app/api/auth/decode-claims";
 type Role = "ADMIN" | "AUTHOR" | "COMMENTATOR";
 
 const adminRoutes = ["/admin", "/users", "/dashboard/admin", "/settings", "/desk/view"];
-const authorRoutes = ["/desk/view"];
+const authorRoutes = ["/posts/new"];
 const commntatorRoutes = ["/community", "/messages", "/", "/announced"];
 
 export const config = {

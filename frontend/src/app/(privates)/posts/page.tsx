@@ -44,7 +44,7 @@ export default async function PostsPage() {
                   </h2>
                   <div className="flex items-center justify-between">
                     <FileText className="w-5 h-5" />
-                    <Link href={`/posts/${post.postId}/config`} className="cursor-pointer p-2 hover:bg-amber-400 rounded-2xl">
+                    <Link href={`/posts/${post.postId}/publish`} className="cursor-pointer p-2 hover:bg-amber-400 rounded-2xl">
                       <FileCogIcon className="w-5 h-5" />
                     </Link>
 
