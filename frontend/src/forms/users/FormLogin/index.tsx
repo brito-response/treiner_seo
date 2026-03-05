@@ -7,9 +7,9 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { ButtonGeneric } from "@/components/ButtonGeneric";
 
 import { hiddenPaths } from "./hidenpath";
-import { ButtonGeneric } from "@/components/ButtonGeneric";
 
 type TypeLoginData = { email: string; password: string; };
 
@@ -68,7 +68,7 @@ export const FormLogin: React.FC = () => {
       <div className="w-full flex flex-col lg:flex-row lg:items-center max-h-8.75 gap-2">
         <label htmlFor={idEmail} className="text-sm font-semibold">e-mail:</label>
         <input id={idEmail} type="text" {...register("email", { required: "Este campo é obrigatório" })}
-          className="min-h-7.5 w-full px-3 border border-gray-300 rounded-full outline-none text-sm bg-(--bg-color) caret-(--text-color) text-center transition-all duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 lg:w-auto"
+          className="min-h-7.5 w-full px-3 border border-gray-300 rounded-full outline-none text-sm bg-white caret-gray-900 text-center transition-all duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 lg:w-auto"
         />
         {errors.email && (
           <span className="text-red-600 text-sm mt-2">
@@ -80,7 +80,7 @@ export const FormLogin: React.FC = () => {
       <div className="w-full flex flex-col lg:flex-row lg:items-center max-h-8.75 gap-2">
         <label htmlFor={idPassword} className="text-sm font-semibold">password:</label>
         <input id={idPassword} type="password" {...register("password", { required: "Este campo é obrigatório" })}
-          className="min-h-7.5 w-full px-3 border border-gray-300 rounded-full outline-none text-sm bg-(--bg-color) caret-(--text-color) text-center transition-all duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 lg:w-auto"
+          className="min-h-7.5 w-full px-3 border border-gray-300 rounded-full outline-none text-sm bg-white caret-gray-900 text-center transition-all duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 lg:w-auto"
         />
         {errors.password && (
           <span className="text-red-600 text-sm mt-2">

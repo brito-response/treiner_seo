@@ -1,9 +1,9 @@
 import { NewsCardComplete } from '@/components/NewsCardComplete';
 import { PaginatedPosts, PostQuery } from '@/utils/models/postsquery';
 
-async function getFilteredPosts(categoryName: string, page: string = "1", limit: string = "10"): Promise<PaginatedPosts | null> {
+async function getFilteredPosts(categoryName: string): Promise<PaginatedPosts | null> {
   try {
-    const response = await fetch(`${process.env.NEXT_BACKEND_URL}/posts/filtered?page=${page}&limit=${limit}&categoryName=${categoryName}`);
+    const response = await fetch(`${process.env.NEXT_BACKEND_URL}/posts/filtered?categoryName=${categoryName}`);
     if (!response.ok) return null;
     const paginatedPosts: PaginatedPosts = await response.json();
     return paginatedPosts;

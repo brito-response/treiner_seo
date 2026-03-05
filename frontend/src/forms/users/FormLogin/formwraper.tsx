@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FormLogin } from ".";
 import { XIcon } from "lucide-react";
 import { hiddenPaths } from "./hidenpath";
+import { ButtonGeneric } from "@/components/ButtonGeneric";
 
 export const FormLoginWrapper = () => {
   const pathname = usePathname();
@@ -21,23 +22,20 @@ export const FormLoginWrapper = () => {
   return (
     <>
       {/* Mobile & Tablets (<lg): displays normal form */}
-      <div className="block md:hidden">
+      <div className="bg-gray-800 block md:hidden">
         <FormLogin />
       </div>
 
       {/* Desktop (lg:): button + modal */}
-      <div className="hidden md:flex">
-        <span className="max-h-7 px-6 py-1 font-bold text-md rounded flex items-center justify-center cursor-pointer transition-colors duration-200 ease-in-out hover:bg-(--brand-400) lg:w-auto w-full lg:mt-0"
-          onClick={() => setOpen(true)}>
-          LOGIN
-        </span>
+      <div className="hidden md:flex bg-gray-800 rounded-full">
+        <ButtonGeneric label="Login" onClick={() => setOpen(true)} />
       </div>
 
       {/* MODAL */}
       <AnimatePresence>
         {open && (
           <motion.div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-999" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <motion.div className="bg-slate-50 rounded-2xl p-6 w-105 shadow-xl relative" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }} transition={{ type: "spring", stiffness: 120 }}>
+            <motion.div className="bg-white rounded-2xl p-6 w-105 shadow-xl relative" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }} transition={{ type: "spring", stiffness: 120 }}>
               {/* Botão fechar */}
               <button onClick={() => setOpen(false)} className="absolute right-4 top-4 text-gray-600 hover:text-black text-xl">
                 <XIcon />
@@ -54,4 +52,3 @@ export const FormLoginWrapper = () => {
     </>
   );
 };
-

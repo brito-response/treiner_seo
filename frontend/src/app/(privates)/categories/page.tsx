@@ -1,6 +1,7 @@
 import { Category } from "@/utils/models/categories";
 import Link from "next/link";
 import { FileCogIcon, FileText } from "lucide-react";
+import { HeaderAtalho } from "@/components/HeaderAtalho";
 
 async function getcategories(): Promise<Category[]> {
   const response = await fetch(`${process.env.NEXT_BACKEND_URL}/categories`, {
@@ -16,8 +17,8 @@ export default async function CategoriesPage() {
 
   return (
     <div className="w-full min-h-screen bg-[--bg-section-100] p-10 transition-colors duration-500">
+      <HeaderAtalho atalhos={[{ content: "Nova Categoria", url: "/categories/new" }, { content: "Posts", url: "/posts" }]} />
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
         <header className="flex items-center justify-between mb-10">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-xl bg-primary/10 text-primary">
