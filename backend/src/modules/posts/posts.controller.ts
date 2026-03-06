@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, UseGuards, Req, DefaultValuePipe, ParseIntPipe, Query, Put } from '@nestjs/common';
 import { PostsService } from './posts.service';
-import { ApiBearerAuth, ApiConsumes, ApiCreatedResponse, ApiOkResponse, ApiQuery } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiConsumes, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { Roles } from '../users/utils/decorators/roles.decorator';
 import { JwtAuthGuard } from '../users/utils/guards/jwt.guard';
 import { RolesGuard } from '../users/utils/guards/roles.guard';

@@ -3,14 +3,12 @@ import { decoderTokenToClaims } from "./app/api/auth/decode-claims";
 
 type Role = "ADMIN" | "AUTHOR" | "COMMENTATOR";
 
-const adminRoutes = ["/admin", "/users", "/dashboard/admin", "/settings", "/desk/view"];
-const authorRoutes = ["/posts/new"];
-const commntatorRoutes = ["/community", "/messages", "/", "/announced"];
+const adminRoutes = ["/admin", "/users", "/partnerships"];
+const authorRoutes = ["/posts/new", "/posts/*"];
+const commntatorRoutes = ["/community", "/messages", "/announced"];
 
 export const config = {
-    matcher: [
-        "/admin/:path*", "/users/:path*", "/settings", "/settings/:path*", "/desk/view", "/desk/view/:path*", "/messages", "/messages/:path*"
-    ]
+    matcher: ["/admin/:path*", "/users/:path*", "/posts/:path*", "/settings", "/posts/new", "/partnerships/:path*"]
 };
 
 function canAccessRoute(path: string, role: Role) {

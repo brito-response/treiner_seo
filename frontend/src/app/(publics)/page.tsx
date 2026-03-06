@@ -1,5 +1,6 @@
 import Hero from '@/components/Hero';
 import NewsSection from '@/components/NewsSection';
+import PartenershipSection from '@/components/PartenershipSection';
 
 export default function Home() {
   const cidades = [{ nome: "São joão do Sabugi", estado: "RN" }, { nome: "Caicó", estado: "RN" }, { nome: "Ipueira", estado: "RN" }];
@@ -10,6 +11,7 @@ export default function Home() {
       </h1>
       <Hero />
       <NewsSection />
+      <PartenershipSection />
     </div>
   );
 }

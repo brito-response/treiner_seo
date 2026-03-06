@@ -1,6 +1,6 @@
 "use client";
 
-import { AlignJustifyIcon, FileEditIcon, FolderTreeIcon, HouseIcon, MessageCircleIcon, SettingsIcon, UserIcon, WalletIcon } from "lucide-react";
+import { AlignJustifyIcon, FileEditIcon, FolderTreeIcon, HandshakeIcon, HouseIcon, MessageCircleIcon, SettingsIcon, UserIcon, WalletIcon } from "lucide-react";
 import Link from "next/link";
 import { ReactElement, useState } from "react";
 import { useMenu } from "@/contexts/manager-context";
@@ -17,6 +17,7 @@ export const MenuAside: React.FC = () => {
     { icon: <FolderTreeIcon size={24} />, title: "Categorias", url: "/categories" },
     { icon: <MessageCircleIcon size={24} />, title: "Mensagens", url: "/messages" },
     { icon: <UserIcon size={24} />, title: "profile", url: "/profile" },
+    { icon: <HandshakeIcon size={24} />, title: "Parcerias", url: "/partnerships" },
     { icon: <SettingsIcon size={24} />, title: "Setting", url: "/settings" },
   ];
 

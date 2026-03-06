@@ -7,6 +7,7 @@ import { PostTag } from 'src/modules/posts/entities/posttag.entity';
 import { Tag } from 'src/modules/tags/entities/tag.entity';
 import { User } from 'src/modules/users/entities/user.entity';
 import { Comment } from 'src/modules/comments/entities/comment.entity';
+import { Partnership } from 'src/modules/partnerships/entities/partnerships.entity';
 
 @Module({
     imports: [SequelizeModule.forRoot({
@@ -16,7 +17,7 @@ import { Comment } from 'src/modules/comments/entities/comment.entity';
         username: process.env.DB_USER || 'postgres',
         password: process.env.DB_PASS || 'postgres',
         database: process.env.DB_NAME || 'blogdb',
-        models: [User, Tag, Post, Comment, Category, PostCategory, PostTag],
+        models: [User, Tag, Post, Comment, Category, PostCategory, PostTag, Partnership],
         autoLoadModels: true,
         synchronize: true,
     })],

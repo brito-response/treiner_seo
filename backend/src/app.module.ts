@@ -6,10 +6,11 @@ import { CommentsModule } from './modules/comments/comments.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { TagsModule } from './modules/tags/tags.module';
 import { ConfigModule } from '@nestjs/config';
+import { PartnershipsModule } from './modules/partnerships/partnerships.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }), DatabaseModule, UsersModule, PostsModule, CommentsModule, CategoriesModule, TagsModule],
+  imports: [ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }), DatabaseModule, UsersModule, PostsModule, CommentsModule, CategoriesModule, TagsModule, PartnershipsModule],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule { }
