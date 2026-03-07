@@ -9,11 +9,17 @@ import fastifyStatic from '@fastify/static';
 import multipart from '@fastify/multipart';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 
+function ensureDir(path: string) {
+  if (!existsSync(path)) {
+    mkdirSync(path, { recursive: true });
+    console.log(`✓ pasta criada em: ${path} ✓`);
+  }
+}
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter());
   app.enableCors({
     origin: ['http://localhost:3000', 'http://blog_frontend:3000', 'http://localhost:8000'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
@@ -25,11 +31,9 @@ async function bootstrap() {
   const fastify = app.getHttpAdapter().getInstance();
   await fastify.register(multipart);
   await fastify.register(fastifyStatic, { root: join(process.cwd(), 'uploads'), prefix: '/uploads/' });
-  const uploadPath = join(process.cwd(), 'uploads/users/profile');
-  if (!existsSync(uploadPath)) {
-    mkdirSync(uploadPath, { recursive: true });
-    console.log(`pasta criada em: ${uploadPath}`);
-  }
+  const uploadsBase = join(process.cwd(), 'uploads');
+  ensureDir(join(uploadsBase, 'users/profile'));
+  ensureDir(join(uploadsBase, 'partnerships'));
 
   //sawgger config
   const config = new DocumentBuilder().setTitle('dev news backend API').setDescription('uma plicação para jornal').setVersion('1.0.0').addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }, 'JWT').build();

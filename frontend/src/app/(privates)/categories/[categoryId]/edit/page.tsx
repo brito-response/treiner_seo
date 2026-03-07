@@ -28,7 +28,7 @@ async function getCategoryById(categoryId: string, token: string): Promise<Categ
 };
 
 export default async function CategoryEditPage({ params }: PageProps) {
-  const { categoryId } = await params;
+  const { categoryId } = params;
   const session: Session | null = await getServerSession(authOptions);
   if (!session) redirect("/");
   const category: Category | null = await getCategoryById(categoryId, session.accessToken);

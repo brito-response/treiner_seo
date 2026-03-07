@@ -19,7 +19,7 @@ export class PartnershipsController {
   @HttpCode(201)
   @ApiCreatedResponse({ type: ResponsePartnershipDto })
   @ApiBearerAuth('jwt')
-  @Roles('AUTHOR', 'ADMIN')
+  @Roles('ADMIN')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post()
   async create(@Body() dto: CreatePartnershipDto): Promise<ResponsePartnershipDto> {
@@ -49,7 +49,7 @@ export class PartnershipsController {
   }
 
   @ApiBearerAuth('jwt')
-  @Roles('AUTHOR', 'ADMIN')
+  @Roles('ADMIN')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOkResponse({ type: ResponsePartnershipDto })
   @Patch(':id')
@@ -60,35 +60,35 @@ export class PartnershipsController {
 
   @HttpCode(204)
   @ApiBearerAuth('jwt')
-  @Roles('AUTHOR')
+  @Roles('ADMIN')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
-  async delete(@Param('id') id: string, @Req() req): Promise<void> {
+  async delete(@Param('id') id: string): Promise<void> {
     await this.partnershipService.remove(id);
   }
 
   @ApiOkResponse({ type: ResponsePartnershipDto })
   @ApiBearerAuth('jwt')
-  @Roles('ADMIN', 'AUTHOR')
+  @Roles('ADMIN', )
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Patch(':id/photo')
   @ApiConsumes('multipart/form-data')
   async uploadPhoto(@Param('id') id: string, @Req() req: FastifyRequest): Promise<ResponsePartnershipDto> {
     const file = await req.file();
-    if (!file) throw new ApiError('No photo sent', 400);
+    if (!file) throw new ApiError('No logo sent', 400);
 
     const buffer = await file.toBuffer();
     const ext = extname(file.filename);
-    const newName = `photo-${Date.now()}-${Math.random().toString(36).substring(2)}${ext}`;
+    const newName = `logo-${Date.now()}-${Math.random().toString(36).substring(2)}${ext}`;
 
-    const uploadDir = join(process.cwd(), 'uploads/posts');
+    const uploadDir = join(process.cwd(), 'uploads/partnerships');
     await fs.mkdir(uploadDir, { recursive: true });
 
     const uploadPath = join(uploadDir, newName);
     await fs.writeFile(uploadPath, buffer);
 
-    const filePath = `/uploads/posts/${newName}`;
-    const postUpdated = await this.partnershipService.addPhotoOfPost(id, filePath);
+    const filePath = `/uploads/partnerships/${newName}`;
+    const postUpdated = await this.partnershipService.addPhotoOfPartnership(id, filePath);
     return plainToInstance(ResponsePartnershipDto, postUpdated.toJSON(), { excludeExtraneousValues: true });
   }
 }

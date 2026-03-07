@@ -9,8 +9,7 @@ function Footer() {
         <div className="min-w-50">
           <Image src="/logo.png" alt="Logo" width={100} height={100} />
           <p className="mt-4">
-            A maior rede de notícias do Brasil.
-            
+            A maior rede de notícias Potiguar.
           </p>
         </div>
 
@@ -38,7 +37,7 @@ function Footer() {
 
           <ul className="flex flex-col uppercase text-blue-900 gap-1">
             <li className="hover:text-blue-500 duration-300 transition-all">
-              <Link href="#">Sobre Dev News</Link>
+              <Link href="#">Sobre o Mídia Sabugiense</Link>
             </li>
             <li className="hover:text-blue-500 duration-300 transition-all">
               <Link href="#">Termos de uso</Link>
@@ -85,7 +84,7 @@ function Footer() {
         </div>
       </div>
       <p className="text-center text-sm text-white  bg-black p-2">
-        © 2026 DevNews. Todos os direitos reservados.
+        © 2026 Mídia Sabugiense. Todos os direitos reservados.
       </p>
     </footer>
   );

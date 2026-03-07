@@ -6,9 +6,9 @@ import { FormLoginWrapper } from '@/forms/users/FormLogin/formwraper';
 function Header() {
   return (
     <header className="border-b border-gray-200 shadow-md shadow-gray-200 w-full z-50 bg-white">
-      <nav className="container mx-auto flex items-center justify-between p-4">
-        <Link href="/" className="cursor-auto">
-          <Image src="/logo.png" alt="Logo" width={100} height={100} />
+      <nav className="container mx-auto flex items-center justify-between px-2">
+        <Link href="/" className="cursor-pointer">
+          <Image src="/logo.png" alt="Logo" width={100} height={100} className='scale-130' />
         </Link>
         {
           <div className="block md:hidden">

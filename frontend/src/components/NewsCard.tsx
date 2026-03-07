@@ -25,7 +25,7 @@ export const NewsCard = ({ news }: Props) => {
           {news.title}
         </p>
 
-        <Link href={`/noticia/${news.postId}`} className="inline-block text-sm font-semibold border-b border-transparent hover:border-black transition-all">
+        <Link href={`/noticias/${news.postId}`} className="inline-block text-sm font-semibold border-b border-transparent hover:border-black transition-all">
           Ler mais →
         </Link>
       </div>

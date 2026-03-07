@@ -120,4 +120,18 @@ export class PostsRepository extends BaseRepository<Post> {
         });
         return posts ?? [];
     }
+
+    async findByIdRelationships(postId: string): Promise<Post | null> {
+        return await this.postModel.findOne({
+            where: {
+                postId: postId,
+                status: PostStatus.PUBLISHED
+            },
+            include: [
+                { model: User },
+                { model: Category, through: { attributes: [] } },
+                { model: Tag, through: { attributes: [] } }
+            ]
+        });
+    }
 }

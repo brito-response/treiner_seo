@@ -1,22 +1,10 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { FormEditPost } from "@/forms/posts";
 import { Post } from "@/utils/models/posts";
-import { Session } from "@/utils/route";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
 interface PageProps { params: { postId: string; }; };
 
-async function getPostById(postId: string, token: string): Promise<Post | null> {
+async function getPostById(postId: string): Promise<Post | null> {
   try {
-    const response = await fetch(`${process.env.NEXT_BACKEND_URL}/posts/${postId}`,
-      {
-        method: "GET",
-        cache: "no-store",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await fetch(`${process.env.NEXT_BACKEND_URL}/posts/${postId}`, { method: "GET", cache: "no-store" });
     if (!response.ok) { return null; };
     const post: Post = await response.json();
     return post;
@@ -27,10 +15,9 @@ async function getPostById(postId: string, token: string): Promise<Post | null> 
 };
 
 export default async function PostEditPage({ params }: PageProps) {
-  const { postId } = await params;
-  const session: Session | null = await getServerSession(authOptions);
-  if (!session) redirect("/");
-  const post: Post | null = await getPostById(postId, session.accessToken);
+  const { postId } = params;
+  const post: Post | null = await getPostById(postId);
+
   return (
     <div className="w-full min-h-screen bg-[--bg-section-100] p-10 transition-colors duration-500">
       <div className="max-w-3xl mx-auto flex flex-col gap-8">

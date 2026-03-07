@@ -1,20 +1,31 @@
-import {  IsNotEmpty, IsString, IsUUID } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreatePartnershipDto {
-    
-    @ApiProperty({ example: 'Introdução ao NestJS', description: 'Título do post' })
+
+    @ApiProperty({ example: 'Loja do Zé', description: 'Nome do negócio parceiro' })
     @IsString()
     @IsNotEmpty()
-    title: string;
+    businessName: string;
 
-    @ApiProperty({ example: 'Neste post vamos aprender os conceitos básicos do NestJS...', description: 'Conteúdo do post' })
+    @ApiProperty({ example: '83999999999', description: 'Whatsapp da empresa' })
     @IsString()
     @IsNotEmpty()
-    content: string;
+    whatsapp: string;
 
-    @ApiProperty({ example: '550e8400-e29b-41d4-a716-446655440999', description: 'ID do usuário criador do post' })
-    @IsUUID('4')
-    userId: string;
+    @ApiProperty({ example: 'https://lojadoze.com', description: 'Site da empresa', required: false })
+    @IsString()
+    @IsOptional()
+    website?: string;
 
-};
+    @ApiProperty({ example: 'Rua João Pessoa, Centro - Santa Luzia', description: 'Endereço do estabelecimento' })
+    @IsString()
+    @IsNotEmpty()
+    address: string;
+
+    @ApiProperty({ example: 'Loja especializada em roupas e acessórios.', description: 'Descrição do parceiro' })
+    @IsString()
+    @IsNotEmpty()
+    description: string;
+
+}

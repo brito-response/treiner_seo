@@ -1,12 +1,11 @@
 import { Partnership } from "@/utils/models/partnerships";
 import Link from "next/link";
 import { FileCogIcon, FileText } from "lucide-react";
+import { HeaderAtalho } from "@/components/HeaderAtalho";
 
 async function getpartnerships(): Promise<Partnership[]> {
   try {
-    const response = await fetch(`${process.env.NEXT_BACKEND_URL}/partnerships`, {
-      cache: "no-store",
-    });
+    const response = await fetch(`${process.env.NEXT_BACKEND_URL}/partnerships`, { cache: "no-store" });
     if (!response.ok) return [];
     const partnerships: Partnership[] = await response.json();
     return partnerships;
@@ -20,6 +19,7 @@ export default async function PartnershipsPage() {
 
   return (
     <div className="w-full min-h-screen bg-[--bg-section-100] p-10 transition-colors duration-500">
+      <HeaderAtalho atalhos={[{ content: "Nova Parceria", url: "/partnerships/new" }]} />
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <header className="flex items-center justify-between mb-10">
@@ -43,7 +43,7 @@ export default async function PartnershipsPage() {
               <div className="flex items-start gap-3">
                 <div className="p-2 w-full bg-muted text-muted-foreground ">
                   <h2 className="font-semibold text-lg leading-snug">
-                    {partnership.title}
+                    {partnership.businessName}
                   </h2>
                   <div className="flex items-center justify-between">
                     <FileText className="w-5 h-5" />
@@ -54,8 +54,7 @@ export default async function PartnershipsPage() {
 
                 </div>
               </div>
-              <div className="flex items-center justify-around">
-                <Link href={`/partnerships/${partnership.partnershipId}/edit`} >editar</Link>
+              <div className="flex items-center justify-center">
                 <Link href={`/partnerships/${partnership.partnershipId}/delete`} >excluir</Link>
               </div>
 

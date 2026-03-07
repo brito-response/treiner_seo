@@ -46,7 +46,7 @@ export default async function Hero() {
               {news.title}
             </h2>
 
-            <Link href={`/noticia/${news.postId}`} className="inline-block font-semibold border-b border-transparent hover:border-white transition-all duration-300">
+            <Link href={`/noticias/${news.postId}`} className="inline-block font-semibold border-b border-transparent hover:border-white transition-all duration-300">
               Ler matéria completa →
             </Link>
 

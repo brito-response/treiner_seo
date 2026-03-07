@@ -9,11 +9,20 @@ export class Partnership extends Model<InferAttributes<Partnership>, InferCreati
     declare partnershipId: CreationOptional<string>;
 
     @Column(DataType.STRING)
-    declare title: string;
+    declare businessName: string;
+
+    @Column({ type: DataType.TEXT, allowNull: true })
+    declare logo?: CreationOptional<string>;
+
+    @Column(DataType.STRING)
+    declare whatsapp: string;
+
+    @Column({ type: DataType.TEXT, allowNull: true })
+    declare website?: CreationOptional<string>;
 
     @Column(DataType.TEXT)
-    declare image?: CreationOptional<string>;
+    declare address: string;
 
     @Column(DataType.TEXT)
-    declare content: string;
+    declare description: string;
 };

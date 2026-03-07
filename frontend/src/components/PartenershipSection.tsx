@@ -1,33 +1,39 @@
-import { PostHilight } from '@/utils/models/posthilight';
-import { NewsCard } from './NewsCard';
-import { NotfoundInfo } from './NotfoundInfo';
+import Image from "next/image";
+import Link from "next/link";
+import { NotfoundInfo } from "./NotfoundInfo";
+import { Partnership } from "@/utils/models/partnerships";
+import { formUrlImage } from "@/utils/utils";
 
-async function getTop6Hilight(): Promise<PostHilight[]> {
+async function getpartnerships(): Promise<Partnership[]> {
   try {
-    const response = await fetch(`${process.env.NEXT_BACKEND_URL}/posts/highlighted/top6`, {
-      cache: "no-store",
-    });
+    const response = await fetch(`${process.env.NEXT_BACKEND_URL}/partnerships`, { cache: "no-store" });
     if (!response.ok) return [];
-    const posts: PostHilight[] = await response.json();
-    return posts;
-  } catch (error) {
+    return await response.json();
+  } catch {
     return [];
   }
-};
+}
 
 export default async function PartenershipSection() {
-  const posthilight = await getTop6Hilight();
+  const partnerships = await getpartnerships();
 
   return (
-    <section className="space-y-6">
+    <section className="space-y-6 py-4 bg-slate-50 rounded-t-2xl">
       <h2 className="text-2xl font-bold">Nossas parcerias</h2>
 
-      {posthilight.length === 0 ? (
-        <NotfoundInfo title={' Não há novas notícias na base de dados'} content={' Assim que novas publicações forem destacadas, elas aparecerão aqui. Volte em breve!'} />
+      {partnerships.length === 0 ? (
+        <NotfoundInfo title="Não há parcerias cadastradas na base de dados" content="Assim que novas publicações forem destacadas, elas aparecerão aqui. Volte em breve!" />
       ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-5">
-          {posthilight.map((item) => (
-            <NewsCard key={item.postId} news={item} />
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(140px,1fr))] gap-6 justify-items-start">
+          {partnerships.map((item) => (
+            <Link
+              key={item.partnershipId}
+              href={item.website || "#"}
+              target="_blank"
+              className="group relative w-full h-16 flex items-center justify-start transition"
+            >
+              <Image src={formUrlImage(item.logo) || ""} alt={item.businessName} fill unoptimized className="object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition duration-300" />
+            </Link>
           ))}
         </div>
       )}

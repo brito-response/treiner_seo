@@ -21,7 +21,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
                 Authorization: `Bearer ${jwt}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ ...body, userId: user?.id }),
+            body: JSON.stringify({ ...body }),
         });
         const contentType = response.headers.get("Content-Type");
         if (contentType && contentType.includes("application/json") && response.status === 201) {

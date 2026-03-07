@@ -11,10 +11,10 @@ export class PartnershipsService extends BaseService<Partnership, CreatePartners
     super(partnershipsRepository);
   }
  
-  async addPhotoOfPost(id: string, newImage: string) {
+  async addPhotoOfPartnership(id: string, newImage: string) {
     const post = await this.partnershipsRepository.getInstanceOfPostById(id);
-    if (!post) throw new ApiError('Post not found', 404);
-    post.image = newImage;
+    if (!post) throw new ApiError('Partnership not found', 404);
+    post.logo = newImage;
     await post.save();
     return post;
   }

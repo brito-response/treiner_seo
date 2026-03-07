@@ -37,7 +37,6 @@ export class PostsService extends BaseService<Post, CreatePostDto, UpdatePostDto
     return await this.postsRepository.findPublished(limit, offset);
   }
 
-
   async listByAuthor(userId: string) {
     return await this.postsRepository.findByAuthor(userId);
   }
@@ -78,16 +77,6 @@ export class PostsService extends BaseService<Post, CreatePostDto, UpdatePostDto
     return await this.findOne(postId);
   }
 
-  async highlightPost(postId: string): Promise<Post> {
-    const post = await this.findOne(postId);
-    if (!post) throw new ApiError('Post not found', 404);
-    if (post.status !== PostStatus.PUBLISHED) throw new ApiError('Only published posts can be highlighted', 400);
-
-    const updated = await this.postsRepository.incrementHighlight(postId);
-    if (!updated) throw new ApiError('Post not found', 404);
-    return updated;
-  }
-
   async getMostHighlighted(): Promise<Post> {
     const post = await this.postsRepository.findMostHighlighted();
     if (!post) throw new ApiError('No highlighted posts found', 404);
@@ -98,4 +87,20 @@ export class PostsService extends BaseService<Post, CreatePostDto, UpdatePostDto
     return await this.postsRepository.findTopHighlighted(6);
   }
 
+  async findOneWithRelationships(postId: string): Promise<Post> {
+    const post = await this.postsRepository.findByIdRelationships(postId);
+    if (!post) throw new ApiError('No highlighted posts found', 404);
+    return post;
+  }
+
+  async highlightPost(postId: string): Promise<Post> {
+    const post = await this.findOne(postId);
+    if (!post) throw new ApiError('Post not found', 404);
+    if (post.status !== PostStatus.PUBLISHED) throw new ApiError('Only published posts can be highlighted', 400);
+
+    const updated = await this.postsRepository.incrementHighlight(postId);
+    if (!updated) throw new ApiError('Post not found', 404);
+    return updated;
+  }
+  
 }

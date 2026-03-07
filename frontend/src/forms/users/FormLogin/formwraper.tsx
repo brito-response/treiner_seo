@@ -14,10 +14,7 @@ export const FormLoginWrapper = () => {
 
   const isHidden = hiddenPaths.some((path) => pathname.startsWith(path));
 
-  // If the route is protected → only the FormLogin itself is rendered (which displays the "Log Out" button).
-  if (isHidden) {
-    return <FormLogin />;
-  }
+  if (isHidden) { return <FormLogin />; };
 
   return (
     <>

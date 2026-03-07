@@ -21,6 +21,10 @@ export class ResponseHighlightedPostDto {
 
   @ApiProperty()
   @Expose()
+  content: string;
+
+  @ApiProperty()
+  @Expose()
   highlightPost: number;
 
   @ApiProperty({ required: false })

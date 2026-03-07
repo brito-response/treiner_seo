@@ -55,6 +55,7 @@ export class PostsController {
     return plainToInstance(ResponseCountDataDto, { count });
   }
 
+  @ApiOkResponse({ type: ResponseHighlightedPostDto })
   @Get('highlighted/top')
   async getMostHighlighted(): Promise<ResponseHighlightedPostDto> {
     const post = await this.postsService.getMostHighlighted();
@@ -68,7 +69,7 @@ export class PostsController {
     return plainToInstance(ResponseHighlightedPostDto, posts.map(post => post.toJSON()), { excludeExtraneousValues: true });
   }
 
-  @ApiOkResponse({ type: ResponsePostDto, isArray: true })
+  @ApiOkResponse({ type: ResponsePostDto })
   @Get(':id')
   async getById(@Param('id') id: string): Promise<ResponsePostDto> {
     const post = await this.postsService.findOne(id);
@@ -92,6 +93,13 @@ export class PostsController {
   @Delete(':id')
   async delete(@Param('id') id: string, @Req() req): Promise<void> {
     await this.postsService.remove(id);
+  }
+
+  @ApiOkResponse({ type: ResponseHighlightedPostDto })
+  @Get(':id/relationships')
+  async getByIdRelationships(@Param('id') id: string): Promise<ResponseHighlightedPostDto> {
+    const post = await this.postsService.findOneWithRelationships(id);
+    return plainToInstance(ResponseHighlightedPostDto, post.toJSON(), { excludeExtraneousValues: true });
   }
 
   @ApiBearerAuth('jwt')
@@ -147,13 +155,8 @@ export class PostsController {
     return plainToInstance(ResponsePostDto, post.toJSON(), { excludeExtraneousValues: true });
   }
 
-  @ApiBearerAuth('jwt')
-  @Roles('AUTHOR', 'ADMIN')
-  @UseGuards(JwtAuthGuard, RolesGuard)
   @Patch(':id/highlight')
   async highlight(@Param('id') id: string): Promise<void> {
     await this.postsService.highlightPost(id);
   }
-
-
 }

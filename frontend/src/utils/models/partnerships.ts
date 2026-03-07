@@ -1,8 +1,11 @@
 export type Partnership = {
     partnershipId: string;
-    title: string;
-    image?: string;
-    content: string;
+    businessName: string;
+    logo?: string;
+    whatsapp: string;
+    website?: string;
+    address: string;
+    description: string;
     createdAt: Date;
     updatedAt: Date;
 };

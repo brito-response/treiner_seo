@@ -6,6 +6,7 @@ export type PostHilight = {
     postId: string;
     title: string;
     image?: string;
+    content: string;
     highlightPost: number;
     publishedAt?: string;
     user: User;
