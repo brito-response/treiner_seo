@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 function Footer() {
   return (
-    <footer className="bg-gray-200">
+    <footer className="bg-(--footer)">
       <div className="container mx-auto grid gap-10 p-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <div className="min-w-50">
           <Image src="/logo.png" alt="Logo" width={100} height={100} />

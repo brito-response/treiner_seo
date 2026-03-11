@@ -18,7 +18,7 @@ export default async function PartenershipSection() {
   const partnerships = await getpartnerships();
 
   return (
-    <section className="space-y-6 py-4 bg-slate-50 rounded-t-2xl">
+    <section className="space-y-6 py-4 bg-(--background) rounded-t-2xl">
       <h2 className="text-2xl font-bold">Nossas parcerias</h2>
 
       {partnerships.length === 0 ? (

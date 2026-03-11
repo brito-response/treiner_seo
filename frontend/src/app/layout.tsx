@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
+import { ThemeInitializer } from '@/components/ThemeInitializer';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -17,10 +18,18 @@ export const metadata: Metadata = {
   description: 'Informação com credibilidade',
 };
 
-export default function RootLayout({children}: Readonly<{children: React.ReactNode;}>) {
+function getThemeFromCookie(cookie?: string): 'light' | 'dark' {
+  if (!cookie) return 'light';
+  const match = cookie.match(/theme=(dark|light)/);
+  return match ? (match[1] as 'light' | 'dark') : 'light';
+}
+interface RootLayoutProps { children: React.ReactNode; cookies?: string; };
+export default function RootLayout({ children, cookies }: Readonly<RootLayoutProps>) {
+  const theme = getThemeFromCookie(cookies);
   return (
     <html lang="pt-br">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen w-full`}>
+        <ThemeInitializer />
         {children}
       </body>
     </html>

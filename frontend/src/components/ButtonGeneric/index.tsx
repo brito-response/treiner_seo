@@ -6,7 +6,9 @@ type ButtonGenericProps = { label: string; type?: "reset" | "submit" | "button";
 
 export const ButtonGeneric: React.FC<ButtonGenericProps> = ({ label, type = "submit", className = "", ...props }) => {
     return (
-        <button type={type} className={`max-h-7 px-6 py-1 bg-gray-700 text-white font-bold text-md rounded-4xl flex items-center justify-center cursor-pointer transition-colors duration-200 ease-in-out hover:bg-slate-900 lg:w-auto w-full lg:mt-0 ${className}`} {...props}>
+        <button type={type}
+            className={`inline-flex items-center justify-center rounded-3xl bg-amber-500 px-5 py-2.5 text-sm font-semibold text-slate-950 shadow-lg shadow-amber-500/20 transition hover:bg-amber-400 ${className}`}
+            {...props}>
             {label}
         </button>
     );
